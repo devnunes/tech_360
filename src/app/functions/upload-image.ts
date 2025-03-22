@@ -16,6 +16,7 @@ type UploadImageInput = z.input<typeof uploadImageInput>
 
 const allowedContentTypes = [
   'image/jpeg',
+  'image/jpg',
   'image/png',
   'image/png',
   'image/webp',
