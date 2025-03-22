@@ -2,7 +2,7 @@ import { randomUUID } from 'node:crypto'
 import { Readable } from 'node:stream'
 import { db } from '@/infra/db'
 import { schema } from '@/infra/db/schemas'
-import { isRight, unwrapEither } from '@/infra/shared/either'
+import { isLeft, isRight, unwrapEither } from '@/infra/shared/either'
 import { eq } from 'drizzle-orm'
 import { beforeAll, describe, expect, it, vi } from 'vitest'
 import { InvalidFileFormat } from './errors/invalid-format-type'
@@ -54,7 +54,7 @@ describe('uploadImage', () => {
       contentStream: Readable.from([]),
     })
 
-    expect(isRight(sut)).toBe(true)
+    expect(isLeft(sut)).toBe(true)
     expect(unwrapEither(sut)).toBeInstanceOf(InvalidFileFormat)
   })
 })
