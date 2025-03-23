@@ -1,5 +1,4 @@
 import { randomUUID } from 'node:crypto'
-import { Readable } from 'node:stream'
 import { isRight, unwrapEither } from '@/infra/shared/either'
 import { makeUpload } from '@/test/factories/make-upload'
 import dayjs from 'dayjs'
@@ -7,7 +6,7 @@ import { describe, expect, it } from 'vitest'
 import { getUploads } from './get-uploads'
 
 describe('get uploads', () => {
-  it('should be able to get the uploads', async () => {
+  it('should be able to get uploads', async () => {
     const namePattern = randomUUID()
 
     const upload1 = await makeUpload({ name: `${namePattern}.webp` })

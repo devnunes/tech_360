@@ -8,7 +8,7 @@ import { r2 } from './client'
 
 const uploadFileToStorageInput = z.object({
   folder: z.enum(['images', 'downloads']),
-  filename: z.string(),
+  fileName: z.string(),
   contentType: z.string(),
   contentStream: z.instanceof(Readable),
 })
@@ -16,11 +16,11 @@ const uploadFileToStorageInput = z.object({
 type UploadFileToStorageInput = z.input<typeof uploadFileToStorageInput>
 
 export async function uploadFileToStorage(input: UploadFileToStorageInput) {
-  const { folder, filename, contentType, contentStream } =
+  const { folder, fileName, contentType, contentStream } =
     uploadFileToStorageInput.parse(input)
 
-  const fileExtension = extname(filename)
-  const fileNameWithoutExtension = basename(filename)
+  const fileExtension = extname(fileName)
+  const fileNameWithoutExtension = basename(fileName)
   const sanitizedFileName = fileNameWithoutExtension.replace(/[^a-z0-9]/g, '')
   const sanitizedFilenameWithExtension = `${sanitizedFileName}${fileExtension}`
 
