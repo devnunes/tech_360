@@ -1,11 +1,8 @@
 import { randomUUID } from 'node:crypto'
-import { Readable } from 'node:stream'
-import { buffer } from 'node:stream/consumers'
 import { isRight, unwrapEither } from '@/infra/shared/either'
 import * as upload from '@/infra/storage/upload-file-to-storage'
 import { makeUpload } from '@/test/factories/make-upload'
-import dayjs from 'dayjs'
-import { beforeAll, describe, expect, it, vi } from 'vitest'
+import { describe, expect, it, vi } from 'vitest'
 import { exportUploads } from './export-uploads'
 
 describe('export uploads', () => {
