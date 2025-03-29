@@ -32,7 +32,7 @@ export async function uploadImage(
   }
 
   const { key, url } = await uploadFileToStorage({
-    filename: fileName,
+    fileName: fileName,
     contentType,
     contentStream,
     folder: 'images',
