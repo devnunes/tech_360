@@ -1,1 +1,8 @@
 .DS_Store
+web/node_modules
+web/build
+web/dist
+web/.env
+server/node_modules
+server/build
+server/dist
