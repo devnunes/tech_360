@@ -1,4 +1,7 @@
+import { enableMapSet } from 'immer'
+import { s } from 'motion/react-client'
 import { create } from 'zustand'
+import { immer } from 'zustand/middleware/immer'
 
 export interface Upload {
   name: string
@@ -10,24 +13,26 @@ type UploadState = {
   addUploads: (files: File[]) => void
 }
 
-export const useUploads = create<UploadState>((set, get) => {
-  function addUploads(files: File[]) {
-    for (const file of files) {
-      const uploadId = crypto.randomUUID()
-      const upload: Upload = {
-        name: file.name,
-        file,
-      }
-      set(state => {
-        return {
-          uploads: new Map(state.uploads).set(uploadId, upload),
-        }
-      })
-    }
-  }
+enableMapSet()
 
-  return {
-    uploads: new Map(),
-    addUploads,
-  }
-})
+export const useUploads = create<UploadState, [['zustand/immer', never]]>(
+  immer(set => {
+    function addUploads(files: File[]) {
+      for (const file of files) {
+        const uploadId = crypto.randomUUID()
+        const upload: Upload = {
+          name: file.name,
+          file,
+        }
+        set(state => {
+          state.uploads.set(uploadId, upload)
+        })
+      }
+    }
+
+    return {
+      uploads: new Map(),
+      addUploads,
+    }
+  })
+)
