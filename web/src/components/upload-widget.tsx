@@ -1,14 +1,14 @@
-import { UploadWidgetHeader } from "./upload-widget-header";
-import { UploadWidgetDropzone } from "./upload-widget-dropzone";
-import { UploadWidgetUploadList } from "./upload-widget-upload-list";
-import * as Collapsible from "@radix-ui/react-collapsible";
-import { motion, useCycle } from "motion/react"
-import { UploadWidgetMinimizedButton } from "./upload-widget-minimized-button";
+import { UploadWidgetHeader } from './upload-widget-header'
+import { UploadWidgetDropzone } from './upload-widget-dropzone'
+import { UploadWidgetUploadList } from './upload-widget-upload-list'
+import * as Collapsible from '@radix-ui/react-collapsible'
+import { motion, useCycle } from 'motion/react'
+import { UploadWidgetMinimizedButton } from './upload-widget-minimized-button'
 
 export function UploadWidget() {
-  const isThereAnyPendingUploads = false;
+  const isThereAnyPendingUploads = false
 
-  const [isWidgetOpen, toggleWidgetOpen] = useCycle(false, true);
+  const [isWidgetOpen, toggleWidgetOpen] = useCycle(false, true)
   return (
     <Collapsible.Root onOpenChange={() => toggleWidgetOpen()} asChild>
       <motion.div
@@ -21,18 +21,17 @@ export function UploadWidget() {
             height: 44,
             transition: {
               type: 'inertia',
-            }
+            },
           },
           open: {
             width: 360,
             height: 'auto',
             transition: {
               duration: 0.1,
-            }
+            },
           },
         }}
       >
-
         {!isWidgetOpen && <UploadWidgetMinimizedButton />}
 
         <Collapsible.Content>
@@ -48,5 +47,5 @@ export function UploadWidget() {
         </Collapsible.Content>
       </motion.div>
     </Collapsible.Root>
-  );
+  )
 }

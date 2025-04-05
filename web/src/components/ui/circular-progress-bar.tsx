@@ -1,22 +1,22 @@
 interface CircularProgressBarProps {
-  progress: number;
-  size?: number;
-  strokeWidth?: number;
-  circleColor?: string;
-  progressColor?: string;
+  progress: number
+  size?: number
+  strokeWidth?: number
+  circleColor?: string
+  progressColor?: string
 }
 
 export const CircularProgressBar: React.FC<CircularProgressBarProps> = ({
   progress,
   size = 120,
   strokeWidth = 8,
-  circleColor = "text-zinc-800",
-  progressColor = "text-indigo-500",
+  circleColor = 'text-zinc-800',
+  progressColor = 'text-indigo-500',
 }) => {
-  const center = size / 2;
-  const radius = center - strokeWidth / 2;
-  const circumference = 2 * Math.PI * radius;
-  const progressOffset = circumference - (progress / 100) * circumference;
+  const center = size / 2
+  const radius = center - strokeWidth / 2
+  const circumference = 2 * Math.PI * radius
+  const progressOffset = circumference - (progress / 100) * circumference
 
   return (
     <div className="relative" style={{ width: size, height: size }}>
@@ -40,7 +40,7 @@ export const CircularProgressBar: React.FC<CircularProgressBarProps> = ({
           style={{
             strokeDasharray: circumference,
             strokeDashoffset: progressOffset,
-            transition: "stroke-dashoffset 0.5s ease-in-out",
+            transition: 'stroke-dashoffset 0.5s ease-in-out',
           }}
         />
       </svg>
@@ -51,6 +51,5 @@ export const CircularProgressBar: React.FC<CircularProgressBarProps> = ({
         <span className="text-xxs text-zinc-400">%</span>
       </div>
     </div>
-  );
-};
-
+  )
+}
