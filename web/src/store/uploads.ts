@@ -4,6 +4,7 @@ import { create } from 'zustand'
 import { immer } from 'zustand/middleware/immer'
 import { useShallow } from 'zustand/shallow'
 import { uploadFileToStorage } from '../http/upload-file-to-storage'
+import { compressImage } from '../utils/compress-image'
 
 export interface Upload {
   name: string
@@ -47,9 +48,16 @@ export const useUploads = create<UploadState, [['zustand/immer', never]]>(
       }
 
       try {
+        const compressedImage = await compressImage({
+          file: upload.file,
+          maxWidth: 200,
+          maxHeight: 200,
+          quality: 0.8,
+        })
+
         await uploadFileToStorage(
           {
-            file: upload.file,
+            file: compressedImage,
             onProgress(sizeInBytes) {
               updateUpload(uploadId, {
                 uploadSizeInBytes: sizeInBytes,
