@@ -16,7 +16,11 @@ export function UploadWidgetUploadItem({
   const cancelUpload = useUploads(state => state.cancelUpload)
 
   const progress = Math.min(
-    Math.round((upload.uploadSizeInBytes * 100) / upload.originalSizeInBytes),
+    upload.compressedSizeInBytes
+      ? Math.round(
+          (upload.uploadSizeInBytes * 100) / upload.compressedSizeInBytes
+        )
+      : 0,
     100
   )
 
@@ -29,7 +33,9 @@ export function UploadWidgetUploadItem({
         </span>
 
         <span className="text-xxs text-zinc-400 flex gap-1.5 items-center">
-          <span className="line-through">{formatBytes(upload.originalSizeInBytes)}</span>
+          <span className="line-through">
+            {formatBytes(upload.originalSizeInBytes)}
+          </span>
           <div className="size-1 rounded-full bg-zinc-700" />
           <span>
             300KB
@@ -38,17 +44,24 @@ export function UploadWidgetUploadItem({
           <div className="size-1 rounded-full bg-zinc-700" />
           {upload.status === 'success' && <span> 100%</span>}
           {upload.status === 'progress' && <span>{progress}</span>}
-          {upload.status === 'error' && <span className='text-red-400'>Error</span>}
-          {upload.status === 'canceled' && <span className='text-amber-400'>Canceled</span>}
+          {upload.status === 'error' && (
+            <span className="text-red-400">Error</span>
+          )}
+          {upload.status === 'canceled' && (
+            <span className="text-amber-400">Canceled</span>
+          )}
         </span>
       </div>
 
       <Progress.Root
         data-status={upload.status}
-        className="group bg-zinc-800 rounded-full h-1 overflow-hidden">
+        className="group bg-zinc-800 rounded-full h-1 overflow-hidden"
+      >
         <Progress.Indicator
           className="bg-indigo-500 h-1 group-data-[status=success]:bg-green-400 group-data-[status=error]:bg-red-400 group-data-[status=canceled]:bg-yellow-400 transition-all"
-          style={{ width: upload.status === 'progress' ? `${progress}%` : '100%' }}
+          style={{
+            width: upload.status === 'progress' ? `${progress}%` : '100%',
+          }}
         />
       </Progress.Root>
       <div className="absolute top-2.5 right-2.5 flex items-center gap-1">
@@ -57,7 +70,13 @@ export function UploadWidgetUploadItem({
           <span className="sr-only">Download compressed image</span>
         </Button>
 
-        <Button disabled={upload.status !== 'success'} size="icon-sm">
+        <Button
+          disabled={!upload.remoteUrl}
+          size="icon-sm"
+          onClick={() => {
+            upload.remoteUrl && navigator.clipboard.writeText(upload.remoteUrl)
+          }}
+        >
           <Link2 className="size-4" strokeWidth={1.5} />
           <span className="sr-only">Copy remote URL</span>
         </Button>
@@ -79,6 +98,6 @@ export function UploadWidgetUploadItem({
           <span className="sr-only">Cancel upload</span>
         </Button>
       </div>
-    </div >
+    </div>
   )
 }

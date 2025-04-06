@@ -12,7 +12,9 @@ export interface Upload {
   abortController: AbortController
   status: 'progress' | 'success' | 'error' | 'canceled'
   originalSizeInBytes: number
+  compressedSizeInBytes?: number
   uploadSizeInBytes: number
+  remoteUrl?: string
 }
 
 type UploadState = {
@@ -50,12 +52,16 @@ export const useUploads = create<UploadState, [['zustand/immer', never]]>(
       try {
         const compressedImage = await compressImage({
           file: upload.file,
-          maxWidth: 200,
-          maxHeight: 200,
+          maxWidth: 1000,
+          maxHeight: 1000,
           quality: 0.8,
         })
 
-        await uploadFileToStorage(
+        updateUpload(uploadId, {
+          compressedSizeInBytes: compressedImage.size,
+        })
+
+        const { url } = await uploadFileToStorage(
           {
             file: compressedImage,
             onProgress(sizeInBytes) {
@@ -67,8 +73,11 @@ export const useUploads = create<UploadState, [['zustand/immer', never]]>(
           { signal: upload.abortController.signal }
         )
 
+        console.log('Uploaded file URL:', url)
+
         updateUpload(uploadId, {
           status: 'success',
+          remoteUrl: url,
         })
       } catch (error) {
         updateUpload(uploadId, {
@@ -135,15 +144,21 @@ export const usePendingUploads = () => {
 
       const { total, uploaded } = Array.from(store.uploads.values()).reduce(
         (acc, uploads) => {
-          acc.total += uploads.originalSizeInBytes
+          // if (uploads.compressedSizeInBytes) {
+          // }
           acc.uploaded += uploads.uploadSizeInBytes
+          acc.total +=
+            uploads.compressedSizeInBytes || uploads.originalSizeInBytes
 
           return acc
         },
         { total: 0, uploaded: 0 }
       )
 
-      const globalPercentage = Math.round((uploaded * 100) / total)
+      const globalPercentage = Math.min(
+        Math.round((uploaded * 100) / total),
+        100
+      )
       return { isThereAnyPendingUploads, globalPercentage }
     })
   )

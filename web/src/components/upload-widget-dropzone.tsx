@@ -39,7 +39,9 @@ export function UploadWidgetDropzone() {
               size={56}
               strokeWidth={4}
             />
-            <span className="text-xs">Uploading {amountOfUploads} files...</span>
+            <span className="text-xs">
+              Uploading {amountOfUploads} files...
+            </span>
           </div>
         ) : (
           <>
