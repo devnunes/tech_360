@@ -73,8 +73,6 @@ export const useUploads = create<UploadState, [['zustand/immer', never]]>(
           { signal: upload.abortController.signal }
         )
 
-        console.log('Uploaded file URL:', url)
-
         updateUpload(uploadId, {
           status: 'success',
           remoteUrl: url,
