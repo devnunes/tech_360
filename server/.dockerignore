@@ -1,0 +1,6 @@
+node_modules
+.env.example
+.env.test
+Dockerfile
+docker-compose.yml
+dist

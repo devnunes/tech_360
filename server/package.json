@@ -15,7 +15,8 @@
     "db:studio": "drizzle-kit studio",
     "pretest": "pnpm run db:migrate:test",
     "pretest:watch": "pnpm run db:migrate:test",
-    "tsup": "tsup-node"
+    "tsup": "tsup-node",
+    "start": "node dist/infra/http/server.js"
   },
   "keywords": [],
   "author": "",
